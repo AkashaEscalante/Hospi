@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+    <title>Guía Accesible del Hotel — Navegación Inclusiva de 2 Pisos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Quicksand', sans-serif;
+            background: radial-gradient(circle at top left, #fff0f5 0%, #ffe4ec 45%, #fff7fa 100%);
+            color: #4a2535;
+        }
+        .font-editorial {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Estilos Estéticos Pastel, Brillo Oro Rosa y Animaciones Suaves */
+        .pastel-glass {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(255, 240, 246, 0.88));
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(244, 114, 182, 0.35);
+            box-shadow: 0 10px 30px -6px rgba(219, 39, 119, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .rose-gold-btn {
+            background: linear-gradient(135deg, #f472b6 0%, #e11d48 100%);
+            box-shadow: 0 6px 18px -3px rgba(225, 29, 72, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .rose-gold-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px -4px rgba(225, 29, 72, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+        }
+        .rose-gold-btn:active {
+            transform: scale(0.97);
+        }
+
+        .soft-card-hover {
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .soft-card-hover:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -6px rgba(236, 72, 153, 0.22);
+            border-color: #f472b6;
+        }
+
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .animate-float-in {
+            animation: floatIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* Accesibilidad: Texto Grande */
+        body.a11y-large-text {
+            font-size: 115%;
+        }
+        body.a11y-large-text .text-xs {
+            font-size: 0.92rem !important;
+            line-height: 1.4rem !important;
+        }
+        body.a11y-large-text .text-sm {
+            font-size: 1.05rem !important;
+            line-height: 1.5rem !important;
+        }
+        body.a11y-large-text .text-\[11px\] {
+            font-size: 0.85rem !important;
+        }
+
+        /* Accesibilidad: Alto Contraste (Baja Visión) */
+        body.a11y-high-contrast {
+            background-color: #1a0b12 !important;
+            color: #fff0f5 !important;
+        }
+        body.a11y-high-contrast .pastel-surface {
+            background-color: #26101b !important;
+            color: #ffffff !important;
+            border-color: #ff85b3 !important;
+            border-width: 2px !important;
+        }
+        body.a11y-high-contrast .pastel-subcard {
+            background-color: #361626 !important;
+            color: #ffe4ef !important;
+            border-color: #f472b6 !important;
+        }
+        body.a11y-high-contrast .text-rose-950,
+        body.a11y-high-contrast .text-rose-900,
+        body.a11y-high-contrast .text-rose-800 {
+            color: #ffffff !important;
+        }
+        body.a11y-high-contrast .text-rose-700,
+        body.a11y-high-contrast .text-rose-600 {
+            color: #fbcfe8 !important;
+        }
+
+        /* Áreas táctiles amplias (mínimo 48px para accesibilidad motora) */
+        .a11y-btn {
+            min-height: 48px;
+            min-width: 48px;
+        }
+        button:focus-visible, input:focus-visible {
+            outline: 3px solid #db2777;
+            outline-offset: 2px;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 228, 236, 0.6);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(219, 39, 119, 0.55);
+            border-radius: 10px;
+        }
+        .cursor-grab-map {
+            cursor: grab;
+        }
+        .cursor-grab-map:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-pink-200 selection:text-pink-950">
+
+    <div id="app-container" class="relative w-screen h-screen overflow-hidden flex flex-col">
+        
+        <!-- BARRA DE NAVEGACIÓN SUPERIOR (4 Secciones + Selector de Pisos) -->
+        <header class="relative z-30 flex flex-wrap items-center justify-between gap-2 p-2.5 sm:px-5 pastel-surface pastel-glass border-b-2 border-pink-200">
+            
+            <!-- Identidad del Sistema Inclusivo -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl rose-gold-btn flex items-center justify-center text-white text-2xl shadow-md" aria-hidden="true">
+                    🎀
+                </div>
+                <div>
+                    <h1 class="font-editorial text-base sm:text-xl font-bold text-rose-950 leading-tight tracking-tight">Guía Accesible del Hotel</h1>
+                    <p class="text-xs font-semibold text-rose-600">Orientación Visual y Sonora • Pisos 1 y 2</p>
+                </div>
+            </div>
+
+            <!-- Pestañas Principales (Mapa del Hotel y Ayuda Rápida) -->
+            <nav aria-label="Secciones principales de la aplicación" class="flex flex-wrap items-center gap-2">
+                <button onclick="switchTab('mapa')" id="tab-mapa" aria-pressed="true"
+                    class="a11y-btn px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 rose-gold-btn text-white">
+                    <span aria-hidden="true">🗺️</span>
+                    <span>Mapa del Hotel</span>
+                </button>
+                <button onclick="switchTab('ayuda')" id="tab-ayuda" aria-pressed="false"
+                    class="a11y-btn px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-white/80 text-rose-900 border border-pink-200 hover:bg-pink-100/80 shadow-sm">
+                    <span aria-hidden="true">🛎️</span>
+                    <span>Ayuda Rápida</span>
+                </button>
+            </nav>
+
+            <!-- Selector Rápido de Piso 1 / Piso 2 -->
+            <div id="floor-switcher-box" class="flex items-center gap-1.5 bg-pink-100/70 pastel-subcard p-1.5 rounded-2xl border border-pink-200/80 shadow-inner" role="group" aria-label="Selector de nivel del hotel">
+                <button onclick="setFloor(1)" id="btn-floor-1" aria-pressed="true"
+                    class="a11y-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold rose-gold-btn text-white">
+                    Piso 1 • Planta Baja
+                </button>
+                <button onclick="setFloor(2)" id="btn-floor-2" aria-pressed="false"
+                    class="a11y-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-rose-900 hover:bg-white/70">
+                    Piso 2 • Planta Alta
+                </button>
+            </div>
+        </header>
+
+        <!-- CONTENEDOR PRINCIPAL DE VISTAS -->
+        <main class="relative flex-1 w-full h-full overflow-hidden">
+
+            <!-- ========================================================= -->
+            <!-- VISTA 1: MAPA INTERACTIVO DEL HOTEL (PISO 1 Y PISO 2)     -->
+            <!-- ========================================================= -->
+            <section id="view-mapa" class="relative w-full h-full">
+                <!-- Canvas Táctico del Plano -->
+                <canvas id="mapCanvas" class="block w-full h-full cursor-grab-map" role="img" aria-label="Plano arquitectónico interactivo del hotel con rutas accesibles y guía visual"></canvas>
+
+                <!-- Panel Izquierdo: Buscador, Filtros de Apoyo y Lista de Espacios -->
+                <aside aria-label="Buscador de espacios accesibles"
+                    class="pastel-surface pastel-glass absolute top-3 left-3 z-20 w-[calc(100%-1.5rem)] sm:w-80 max-h-[calc(100%-1.5rem)] flex flex-col rounded-3xl overflow-hidden">
+                    
+                    <div class="p-3.5 border-b border-pink-200/70 space-y-2.5 bg-gradient-to-b from-white/70 to-pink-50/40">
+                        <div class="flex items-center justify-between">
+                            <span id="current-floor-badge" class="text-xs font-bold uppercase tracking-wider text-rose-700 bg-pink-100/90 border border-pink-200 px-3 py-1 rounded-full shadow-sm">
+                                Nivel 1: Planta Baja
+                            </span>
+                            <button onclick="toggleAutoVoice()" id="quick-voice-btn"
+                                class="min-h-[38px] px-3 rounded-xl text-xs font-bold bg-white/90 text-rose-800 border border-pink-200 hover:bg-pink-100 shadow-sm flex items-center gap-1 transition-all"
+                                title="Activar o desactivar lectura automática por voz">
+                                <span id="voice-status-icon">🔈</span>
+                                <span id="voice-status-label">Voz: Off</span>
+                            </button>
+                        </div>
+
+                        <!-- Campo de Búsqueda -->
+                        <div class="relative">
+                            <label for="search-room" class="sr-only">Buscar espacio o habitación accesible</label>
+                            <input id="search-room" type="text" oninput="renderRoomList()"
+                                placeholder="Buscar recepción, ascensor, hab. 201..."
+                                class="w-full min-h-[48px] pl-10 pr-3 rounded-2xl bg-white/85 pastel-subcard border border-pink-200 text-sm font-medium text-rose-950 placeholder-rose-400 focus:bg-white shadow-inner">
+                            <span class="absolute left-3.5 top-3.5 text-rose-400" aria-hidden="true">🔍</span>
+                        </div>
+
+                        <!-- Filtros por Tipo de Accesibilidad -->
+                        <div class="flex flex-wrap gap-1.5" role="group" aria-label="Filtrar espacios por necesidad de accesibilidad">
+                            <button onclick="setCategoryFilter('all')" id="filter-all"
+                                class="min-h-[38px] px-3 py-1 rounded-xl text-xs font-bold rose-gold-btn text-white">
+                                Todos
+                            </button>
+                            <button onclick="setCategoryFilter('movilidad')" id="filter-movilidad"
+                                class="min-h-[38px] px-2.5 py-1 rounded-xl text-xs font-bold bg-white/80 text-rose-900 border border-pink-200 hover:bg-pink-100">
+                                ♿ Sin Escalones
+                            </button>
+                            <button onclick="setCategoryFilter('visual')" id="filter-visual"
+                                class="min-h-[38px] px-2.5 py-1 rounded-xl text-xs font-bold bg-white/80 text-rose-900 border border-pink-200 hover:bg-pink-100">
+                                🧭 Guía Visual
+                            </button>
+                            <button onclick="setCategoryFilter('auditivo')" id="filter-auditivo"
+                                class="min-h-[38px] px-2.5 py-1 rounded-xl text-xs font-bold bg-white/80 text-rose-900 border border-pink-200 hover:bg-pink-100">
+                                🦻 Apoyo Auditivo
+                            </button>
+                            <button onclick="setCategoryFilter('sensorial')" id="filter-sensorial"
+                                class="min-h-[38px] px-2.5 py-1 rounded-xl text-xs font-bold bg-white/80 text-rose-900 border border-pink-200 hover:bg-pink-100">
+                                🌸 Baja Estimulación
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Espacios del Piso Actual -->
+                    <div id="room-list" class="flex-1 overflow-y-auto p-2.5 space-y-2" role="list">
+                        <!-- Generado dinámicamente -->
+                    </div>
+                </aside>
+
+                <!-- Panel Derecho: Inspector Detallado + Diagrama + Lectura en Voz Alta -->
+                <aside id="inspector-panel" aria-live="polite"
+                    class="hidden animate-float-in pastel-surface pastel-glass absolute bottom-20 sm:bottom-auto sm:top-3 right-3 z-20 w-[calc(100%-1.5rem)] sm:w-96 max-h-[65vh] sm:max-h-[calc(100%-6rem)] flex flex-col border-2 border-pink-300 rounded-3xl overflow-hidden">
+                    
+                    <div class="p-4 overflow-y-auto space-y-3">
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <span id="insp-badge" class="inline-block text-[11px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full bg-gradient-to-r from-pink-100 to-rose-100 text-rose-700 border border-pink-200 mb-1">
+                                    Planta Baja
+                                </span>
+                                <h2 id="insp-title" class="font-editorial text-lg font-bold text-rose-950 leading-snug">
+                                    Nombre del Espacio
+                                </h2>
+                            </div>
+                            <button onclick="closeInspector()" aria-label="Cerrar ficha del espacio"
+                                class="a11y-btn rounded-2xl bg-white/90 hover:bg-pink-100 text-rose-800 font-bold flex items-center justify-center border border-pink-200 shadow-sm">
+                                ✕
+                            </button>
+                        </div>
+
+                        <!-- Vista Previa Esquemática de Accesibilidad (SVG dinámico) -->
+                        <div id="insp-diagram" class="w-full h-32 rounded-2xl bg-gradient-to-br from-pink-50 to-rose-50/80 pastel-subcard border border-pink-200 flex items-center justify-center overflow-hidden p-2 shadow-inner">
+                        </div>
+
+                        <!-- Botón Destacado: Leer en Voz Alta -->
+                        <button onclick="speakCurrentRoom()"
+                            class="a11y-btn w-full py-3 px-4 rounded-2xl rose-gold-btn text-white font-bold text-sm flex items-center justify-center gap-2">
+                            <span class="text-lg" aria-hidden="true">🔊</span>
+                            <span>Leer en Voz Alta (Audio Guía)</span>
+                        </button>
+
+                        <!-- Instrucción de Ruta Accesible -->
+                        <div class="p-3.5 rounded-2xl bg-gradient-to-r from-rose-50/90 to-pink-50/90 pastel-subcard border border-pink-200 space-y-1 shadow-sm">
+                            <p class="text-xs font-bold text-rose-700 uppercase tracking-wide">🧭 Cómo llegar sin barreras:</p>
+                            <p id="insp-route" class="text-xs sm:text-sm font-medium text-rose-950 leading-relaxed"></p>
+                        </div>
+
+                        <!-- Descripción y Características de Accesibilidad -->
+                        <p id="insp-desc" class="text-xs sm:text-sm text-rose-900 leading-relaxed"></p>
+
+                        <div>
+                            <p class="text-xs font-bold text-rose-700 uppercase tracking-wide mb-1.5">✨ Comodidades del Espacio:</p>
+                            <ul id="insp-specs" class="grid grid-cols-1 gap-1.5 text-xs font-semibold text-rose-950">
+                            </ul>
+                        </div>
+
+                        <!-- Botón especial si es el Ascensor para cambiar de piso -->
+                        <div id="insp-elevator-action" class="hidden pt-1">
+                            <button onclick="useElevator()"
+                                class="a11y-btn w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-pink-100 to-rose-100 hover:from-pink-200 hover:to-rose-200 text-rose-950 border-2 border-rose-400 font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-all">
+                                <span aria-hidden="true">🛗</span>
+                                <span id="insp-elevator-text">Subir al Piso 2 en Ascensor Accesible</span>
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Controles Inferiores de Zoom, Nivel de Detalle (LOD) y Leyenda -->
+                <div class="absolute bottom-3 left-3 right-3 sm:left-auto sm:right-3 z-20 flex flex-wrap items-center justify-between sm:justify-end gap-2 pointer-events-none">
+                    
+                    <!-- Indicador de Nivel de Detalle por Zoom -->
+                    <div class="pointer-events-auto pastel-surface pastel-glass px-3.5 py-2 rounded-2xl flex items-center gap-2">
+                        <span class="text-xs font-bold text-rose-700">Detalle visual:</span>
+                        <span id="lod-indicator" class="text-xs font-bold text-rose-950 bg-pink-100/90 border border-pink-200 px-2.5 py-0.5 rounded-full">
+                            Vista General (75%)
+                        </span>
+                    </div>
+
+                    <!-- Botones Amplios de Zoom -->
+                    <div class="pointer-events-auto pastel-surface pastel-glass flex items-center gap-1.5 p-1.5 rounded-2xl" role="group" aria-label="Controles de acercamiento del mapa">
+                        <button onclick="adjustZoom(-0.2)" aria-label="Alejar mapa"
+                            class="a11y-btn rounded-xl bg-white/90 hover:bg-pink-100 text-rose-950 font-bold text-lg border border-pink-200 transition-all">
+                            −
+                        </button>
+                        <button onclick="resetCamera()" aria-label="Centrar mapa completo"
+                            class="a11y-btn px-3 rounded-xl bg-white/90 hover:bg-pink-100 text-rose-950 font-bold text-xs border border-pink-200 transition-all">
+                            Centrar
+                        </button>
+                        <button onclick="adjustZoom(0.2)" aria-label="Acercar mapa"
+                            class="a11y-btn rounded-xl rose-gold-btn text-white font-bold text-lg">
+                            +
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- VISTA 2: AYUDA RÁPIDA (ASISTENCIA DIRECTA AL HUÉSPED)     -->
+            <!-- ========================================================= -->
+            <section id="view-ayuda" class="hidden w-full h-full overflow-y-auto p-4 sm:p-8">
+                <div class="max-w-4xl mx-auto space-y-6 pb-12 animate-float-in">
+                    <div class="pastel-surface pastel-glass rounded-3xl p-6 sm:p-7">
+                        <span class="inline-block text-xs font-bold uppercase tracking-wider text-rose-600 bg-pink-100 px-3 py-1 rounded-full mb-2">🎀 Atención Inmediata</span>
+                        <h2 class="font-editorial text-2xl sm:text-3xl font-bold text-rose-950">Ayuda Rápida e Inclusiva</h2>
+                        <p class="text-sm sm:text-base text-rose-800 mt-1.5">
+                            Pulsa cualquiera de las opciones para avisar de inmediato a nuestro personal capacitado. No necesitas realizar llamadas de voz si prefieres atención visual o escrita.
+                        </p>
+                    </div>
+
+                    <!-- Mensaje de Confirmación en Vivo -->
+                    <div id="help-confirmation" role="status" aria-live="assertive"
+                        class="hidden animate-float-in pastel-surface bg-gradient-to-r from-rose-50 to-pink-100 border-2 border-rose-500 rounded-3xl p-5 shadow-lg flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <span class="text-3xl" aria-hidden="true">✅</span>
+                            <div>
+                                <h3 id="help-conf-title" class="font-bold text-base sm:text-lg text-rose-950">Solicitud Enviada</h3>
+                                <p id="help-conf-desc" class="text-xs sm:text-sm text-rose-800">Un miembro del equipo de apoyo va en camino.</p>
+                            </div>
+                        </div>
+                        <button onclick="document.getElementById('help-confirmation').classList.add('hidden')"
+                            class="a11y-btn px-4 rounded-2xl bg-white border border-pink-300 text-xs font-bold text-rose-900 shadow-sm">
+                            Entendido
+                        </button>
+                    </div>
+
+                    <!-- Tarjetas de Solicitud Directa -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <button onclick="requestHelp('Acompañamiento Personal', 'Un asistente capacitado acudirá a tu ubicación actual en menos de 3 minutos para guiarte.')"
+                            class="a11y-btn pastel-surface pastel-glass soft-card-hover text-left p-5 rounded-3xl flex items-start gap-4">
+                            <span class="text-3xl bg-gradient-to-br from-pink-100 to-rose-200 p-3.5 rounded-2xl shadow-sm" aria-hidden="true">🤝</span>
+                            <div>
+                                <h3 class="font-bold text-base sm:text-lg text-rose-950">Solicitar Acompañamiento</h3>
+                                <p class="text-xs sm:text-sm text-rose-700 mt-1">Guía presencial desde la entrada, recepción o ascensor hasta tu habitación.</p>
+                            </div>
+                        </button>
+
+                        <button onclick="requestHelp('Asistencia con Silla de Ruedas', 'Llevaremos una silla de ruedas de cortesía o apoyo de traslado a tu punto actual.')"
+                            class="a11y-btn pastel-surface pastel-glass soft-card-hover text-left p-5 rounded-3xl flex items-start gap-4">
+                            <span class="text-3xl bg-gradient-to-br from-pink-100 to-rose-200 p-3.5 rounded-2xl shadow-sm" aria-hidden="true">♿</span>
+                            <div>
+                                <h3 class="font-bold text-base sm:text-lg text-rose-950">Asistencia con Silla de Ruedas</h3>
+                                <p class="text-xs sm:text-sm text-rose-700 mt-1">Préstamo inmediato de silla de ruedas o ayuda de movilidad por el hotel.</p>
+                            </div>
+                        </button>
+
+                        <button onclick="requestHelp('Intérprete Lengua de Señas (LSM)', 'Se ha activado la videollamada con intérprete de Lengua de Señas en recepción y dispositivos del hotel.')"
+                            class="a11y-btn pastel-surface pastel-glass soft-card-hover text-left p-5 rounded-3xl flex items-start gap-4">
+                            <span class="text-3xl bg-gradient-to-br from-pink-100 to-rose-200 p-3.5 rounded-2xl shadow-sm" aria-hidden="true">🤟</span>
+                            <div>
+                                <h3 class="font-bold text-base sm:text-lg text-rose-950">Intérprete Lengua de Señas</h3>
+                                <p class="text-xs sm:text-sm text-rose-700 mt-1">Conexión visual inmediata con intérprete para comunicación clara sin barreras.</p>
+                            </div>
+                        </button>
+
+                        <button onclick="requestHelp('Asistencia en Habitación Adaptada', 'El personal de soporte técnico y hospitalidad acudirá a tu habitación para ajustar mobiliario o alertas.')"
+                            class="a11y-btn pastel-surface pastel-glass soft-card-hover text-left p-5 rounded-3xl flex items-start gap-4">
+                            <span class="text-3xl bg-gradient-to-br from-pink-100 to-rose-200 p-3.5 rounded-2xl shadow-sm" aria-hidden="true">🛏️</span>
+                            <div>
+                                <h3 class="font-bold text-base sm:text-lg text-rose-950">Asistencia en Habitación</h3>
+                                <p class="text-xs sm:text-sm text-rose-700 mt-1">Ajuste de barras de apoyo, alertas luminosas/vibratorias o entrega de menú de lectura fácil.</p>
+                            </div>
+                        </button>
+
+                        <button onclick="requestHelp('Emergencia Accesible Prioritaria', 'Alerta máxima activada. El equipo de seguridad y enfermería conoce tu perfil de accesibilidad y acude ahora mismo.')"
+                            class="a11y-btn md:col-span-2 text-left p-5 rounded-3xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white border-2 border-rose-800 shadow-lg transition-all flex items-center gap-4">
+                            <span class="text-3xl bg-white/20 p-3.5 rounded-2xl" aria-hidden="true">🚨</span>
+                            <div>
+                                <h3 class="font-bold text-base sm:text-lg">Emergencia Accesible (Evacuación Asistida)</h3>
+                                <p class="text-xs sm:text-sm text-pink-100 mt-0.5">Aviso prioritario silencioso o sonoro para asistencia médica o evacuación segura sin escaleras.</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // =========================================================================
+        // 0. RESPALDO DE DATOS DE INFORMACIÓN Y ACCESIBILIDAD (PARA OTRAS SECCIONES)
+        // =========================================================================
+        const EXTRA_SECTIONS_ARCHIVE = {
+            informacion: [
+                {
+                    icon: "♿",
+                    title: "Paso Amplio y Sin Escalones",
+                    desc: "Pasillos amplios para circular con total comodidad en silla de ruedas o con acompañante, puertas ligeras sin bordes en el suelo y espacio libre para girar sin dificultad."
+                },
+                {
+                    icon: "🐕‍🦺",
+                    title: "Perros de Asistencia Bienvenidos",
+                    desc: "Acceso libre a todas las áreas del hotel sin costo adicional. Contamos con zona de hidratación y descanso en el Patio Jardín de Planta Baja."
+                },
+                {
+                    icon: "🍽️",
+                    title: "Comedor y Menús Adaptados",
+                    desc: "Desayuno y comida (07:00 a 22:00 h). Mesas cómodas para acercar la silla de ruedas, carta en letra grande, pictogramas y código QR con audio-menú."
+                },
+                {
+                    icon: "📶",
+                    title: "Conectividad y Recepción 24h",
+                    desc: "Red Wi-Fi gratuita: Hotel_Inclusivo_Guest (sin contraseña). Chat directo y apoyo auditivo en el mostrador de recepción."
+                }
+            ],
+            accesibilidadOpciones: [
+                { id: "stepFreeOnly", title: "Resaltar Solo Rutas Sin Escalones", desc: "Destaca en el mapa las rampas y el ascensor accesible, atenuando las escaleras convencionales." },
+                { id: "tactileGuide", title: "Mostrar Líneas Guía en el Suelo", desc: "Dibuja en el plano los senderos guía de colores que conectan cada zona del hotel." },
+                { id: "autoVoice", title: "Lectura Automática por Voz", desc: "Lee en voz alta automáticamente el nombre y la ruta cada vez que seleccionas un espacio." },
+                { id: "largeText", title: "Texto Ampliado (Lectura Fácil)", desc: "Aumenta el tamaño de las letras y el espaciado en toda la aplicación." },
+                { id: "highContrast", title: "Modo Alto Contraste (Baja Visión)", desc: "Cambia el fondo pastel claro a oscuro profundo con bordes luminosos oro rosa." }
+            ]
+        };
+
+        // =========================================================================
+        // 1. DATOS ESTRUCTURADOS DEL HOTEL INCLUSIVO (PISO 1 Y PISO 2)
+        // =========================================================================
+        const HOTEL_DATA = {
+            1: {
+                name: "Planta Baja (Nivel 1)",
+                subtitle: "Acceso Principal, Recepción Adaptada, Comedor y Sala Sensorial",
+                entryPoint: { x: 500, y: 690 },
+                rooms: [
+                    {
+                        id: "entrada-1",
+                        floor: 1,
+                        name: "Entrada Principal Sin Escalones",
+                        shortName: "Entrada Principal",
+                        category: "movilidad",
+                        tags: ["movilidad", "visual"],
+                        icon: "🚪",
+                        x: 370, y: 610, w: 260, h: 110,
+                        minZoom: 0.45,
+                        highlightTag: "Puerta automática • Sin escalones",
+                        routeText: "Estás al inicio del recorrido, a nivel de la calle. Sigue la línea guía del suelo en línea recta hacia el frente para llegar a Recepción.",
+                        description: "Entrada totalmente plana con puertas automáticas que se abren solas al acercarte y piso firme antideslizante.",
+                        specs: [
+                            "Acceso plano a nivel de calle, sin ningún escalón",
+                            "Puertas automáticas con paso amplio para silla de ruedas",
+                            "Inicio de ruta guía iluminada hacia Recepción y Ascensor"
+                        ],
+                        diagramType: "ramp"
+                    },
+                    {
+                        id: "recepcion-1",
+                        floor: 1,
+                        name: "Recepción Accesible y Apoyo Auditivo",
+                        shortName: "Recepción",
+                        category: "auditivo",
+                        tags: ["movilidad", "auditivo", "visual"],
+                        icon: "🛎️",
+                        x: 370, y: 420, w: 260, h: 140,
+                        minZoom: 0.45,
+                        highlightTag: "Mostrador cómodo • Apoyo auditivo",
+                        routeText: "Avanza unos pasos en línea recta desde la Entrada Principal siguiendo la guía del suelo.",
+                        description: "Mostrador a altura cómoda para conversar sentado o en silla de ruedas, equipado con sistema de sonido claro para audífonos y tablet de Lengua de Señas.",
+                        specs: [
+                            "Mostrador a altura cómoda para atención sentada",
+                            "Sistema de audio claro para usuarios de audífonos",
+                            "Atención visual con tablet e intérprete de Lengua de Señas"
+                        ],
+                        diagramType: "counter"
+                    },
+                    {
+                        id: "ascensor-1",
+                        floor: 1,
+                        name: "Ascensor Panorámico Accesible (P1 ↔ P2)",
+                        shortName: "Ascensor Accesible",
+                        category: "movilidad",
+                        tags: ["movilidad", "visual", "auditivo"],
+                        icon: "🛗",
+                        x: 425, y: 230, w: 150, h: 130,
+                        minZoom: 0.45,
+                        isElevator: true,
+                        highlightTag: "Cabina amplia • Guía por voz",
+                        routeText: "Desde Recepción, sigue derecho por el pasillo central amplio y libre de obstáculos.",
+                        description: "Cabina espaciosa con pasamanos alrededor, botones grandes iluminados al alcance y voz que anuncia cada piso.",
+                        specs: [
+                            "Botones grandes, contrastados y al alcance",
+                            "Aviso por voz al abrir, cerrar y llegar a cada piso",
+                            "Espacio amplio para entrar y salir con comodidad"
+                        ],
+                        diagramType: "elevator"
+                    },
+                    {
+                        id: "comedor-1",
+                        floor: 1,
+                        name: "Restaurante y Comedor Universal",
+                        shortName: "Comedor",
+                        category: "movilidad",
+                        tags: ["movilidad", "visual"],
+                        icon: "🍽️",
+                        x: 110, y: 230, w: 230, h: 250,
+                        minZoom: 0.65,
+                        highlightTag: "Mesas adaptadas • Audio-menú",
+                        routeText: "Desde Recepción, gira a la izquierda por el pasillo amplio y sin desniveles.",
+                        description: "Comedor espacioso con mesas cómodas para acercar la silla de ruedas, luz agradable sin reflejos molestos y cartas en letra grande y audio.",
+                        specs: [
+                            "Paso amplio entre mesas y altura cómoda",
+                            "Menú disponible en letra grande, pictogramas y audio",
+                            "Personal disponible para ayudarte a servir tus alimentos"
+                        ],
+                        diagramType: "dining"
+                    },
+                    {
+                        id: "sensorial-1",
+                        floor: 1,
+                        name: "Sala de Descanso Sensorial",
+                        shortName: "Sala Sensorial",
+                        category: "sensorial",
+                        tags: ["sensorial"],
+                        icon: "🌸",
+                        x: 660, y: 230, w: 230, h: 170,
+                        minZoom: 0.65,
+                        highlightTag: "Silenciosa • Luz suave regulable",
+                        routeText: "Desde Recepción, gira a la derecha por el pasillo tranquilo. Es la primera puerta a la izquierda.",
+                        description: "Espacio calmo de baja estimulación pensado para descansar del ruido y el movimiento. Cuenta con luz suave regulable y asientos muy cómodos.",
+                        specs: [
+                            "Ambiente silencioso aislado del ruido exterior",
+                            "Iluminación pastel suave que puedes regular a tu gusto",
+                            "Libre de olores fuertes y estímulos intensos"
+                        ],
+                        diagramType: "sensory"
+                    },
+                    {
+                        id: "banos-1",
+                        floor: 1,
+                        name: "Baños Universales Adaptados",
+                        shortName: "Baños Adaptados",
+                        category: "movilidad",
+                        tags: ["movilidad", "visual"],
+                        icon: "🚻",
+                        x: 660, y: 430, w: 230, h: 130,
+                        minZoom: 0.65,
+                        highlightTag: "Barras de apoyo • Puerta ligera",
+                        routeText: "A la derecha de Recepción, justo al lado de la Sala de Descanso Sensorial.",
+                        description: "Baños amplios donde puedes girar fácilmente en silla de ruedas, con barras de apoyo firmes, lavabo libre por debajo y timbre de ayuda al alcance.",
+                        specs: [
+                            "Espacio amplio para maniobrar con comodidad",
+                            "Barras de apoyo firmes y botón de ayuda accesible",
+                            "Señalización grande y de alto contraste en la puerta"
+                        ],
+                        diagramType: "turning"
+                    },
+                    {
+                        id: "patio-1",
+                        floor: 1,
+                        name: "Patio Jardín y Área Perros de Asistencia",
+                        shortName: "Patio Jardín",
+                        category: "visual",
+                        tags: ["movilidad", "visual", "sensorial"],
+                        icon: "🌿",
+                        x: 110, y: 510, w: 230, h: 150,
+                        minZoom: 0.9,
+                        highlightTag: "Rampa suave • Zona perros guía",
+                        routeText: "Al fondo del Comedor (lado izquierdo), bajando por una rampa suave con doble pasamanos.",
+                        description: "Jardín con camino liso y firme, bancas con lugar al lado para silla de ruedas y zona de agua y descanso para perros de asistencia.",
+                        specs: [
+                            "Camino liso y antideslizante sin piedras sueltas",
+                            "Bebedero y zona segura para perros de asistencia",
+                            "Bordes claros y fáciles de seguir con bastón guía"
+                        ],
+                        diagramType: "ramp"
+                    },
+                    {
+                        id: "emergencia-1",
+                        floor: 1,
+                        name: "Salida de Emergencia con Rampa",
+                        shortName: "Salida Rampa",
+                        category: "movilidad",
+                        tags: ["movilidad", "auditivo"],
+                        icon: "🚨",
+                        x: 660, y: 585, w: 230, h: 85,
+                        minZoom: 0.9,
+                        highlightTag: "Evacuación sin escalones • Luz alerta",
+                        routeText: "Al final del pasillo derecho, salida directa al exterior mediante rampa suave.",
+                        description: "Ruta de salida 100% libre de escalones con luces de alerta visual para personas sordas y barra de apertura suave.",
+                        specs: [
+                            "Rampa exterior de salida con pasamanos",
+                            "Alarma visual luminosa en caso de emergencia",
+                            "Puerta de apertura rápida sin esfuerzo"
+                        ],
+                        diagramType: "ramp"
+                    }
+                ]
+            },
+            2: {
+                name: "Planta Alta (Nivel 2)",
+                subtitle: "Habitaciones Adaptadas, Enfermería, Salón Inclusivo y Terraza Segura",
+                entryPoint: { x: 500, y: 295 },
+                rooms: [
+                    {
+                        id: "ascensor-2",
+                        floor: 2,
+                        name: "Ascensor Accesible — Llegada Piso 2",
+                        shortName: "Ascensor Piso 2",
+                        category: "movilidad",
+                        tags: ["movilidad", "visual", "auditivo"],
+                        icon: "🛗",
+                        x: 425, y: 230, w: 150, h: 130,
+                        minZoom: 0.45,
+                        isElevator: true,
+                        highlightTag: "Piso nivelado • Guía visual",
+                        routeText: "Estás en el centro del Piso 2. Desde aquí salen las líneas guía del suelo hacia las habitaciones y el salón.",
+                        description: "Salida a nivel exacto sin bordes ni escalones, con señalización grande y clara para orientarte en el segundo piso.",
+                        specs: [
+                            "Entrada y salida totalmente al ras del piso",
+                            "Señalética iluminada de alto contraste al salir",
+                            "Conexión directa con la Planta Baja"
+                        ],
+                        diagramType: "elevator"
+                    },
+                    {
+                        id: "hab-201",
+                        floor: 2,
+                        name: "Habitación 201 — Movilidad Reducida",
+                        shortName: "Hab. 201 (Movilidad)",
+                        category: "movilidad",
+                        tags: ["movilidad", "visual"],
+                        icon: "🛏️",
+                        x: 110, y: 230, w: 240, h: 200,
+                        minZoom: 0.45,
+                        highlightTag: "Ducha sin escalón • Paso amplio",
+                        routeText: "Al salir del Ascensor, gira a la izquierda. Es la primera puerta amplia a mano derecha.",
+                        description: "Habitación pensada para moverte con total libertad: espacio amplio a ambos lados de la cama, clóset al alcance y ducha plana sin escalón con asiento.",
+                        specs: [
+                            "Ducha a nivel del suelo con asiento plegable",
+                            "Espacio libre junto a la cama para silla de ruedas",
+                            "Apagadores y controles de clima al alcance de la mano"
+                        ],
+                        diagramType: "turning"
+                    },
+                    {
+                        id: "hab-202",
+                        floor: 2,
+                        name: "Habitación 202 — Apoyo Auditivo y Visual",
+                        shortName: "Hab. 202 (Sensorial)",
+                        category: "auditivo",
+                        tags: ["auditivo", "visual"],
+                        icon: "💡",
+                        x: 110, y: 460, w: 240, h: 200,
+                        minZoom: 0.45,
+                        highlightTag: "Alerta visual timbre • Alto contraste",
+                        routeText: "Al salir del Ascensor, gira a la izquierda y avanza hasta el fondo del pasillo bien iluminado.",
+                        description: "Equipada con luces que avisan cuando tocan la puerta, almohada vibratoria para despertador o emergencias y colores contrastantes para distinguir cada mueble.",
+                        specs: [
+                            "Alerta visual de timbre y almohada vibratoria",
+                            "Colores bien diferenciados entre paredes y muebles",
+                            "Control por voz para luces y cortinas"
+                        ],
+                        diagramType: "sensory"
+                    },
+                    {
+                        id: "enfermeria-2",
+                        floor: 2,
+                        name: "Área de Asistencia Médica y Enfermería",
+                        shortName: "Enfermería",
+                        category: "movilidad",
+                        tags: ["movilidad", "sensorial"],
+                        icon: "🩺",
+                        x: 650, y: 230, w: 240, h: 180,
+                        minZoom: 0.65,
+                        highlightTag: "Carga silla eléctrica • Atención 24h",
+                        routeText: "Al salir del Ascensor, gira a la derecha. Es la puerta con el símbolo de salud.",
+                        description: "Atención de primeros auxilios, refrigerador seguro para guardar medicamentos y enchufes accesibles para cargar sillas de ruedas eléctricas.",
+                        specs: [
+                            "Estación de carga para sillas de ruedas eléctricas",
+                            "Resguardo refrigerado para medicamentos",
+                            "Camilla ajustable y atención amable las 24 horas"
+                        ],
+                        diagramType: "counter"
+                    },
+                    {
+                        id: "salon-2",
+                        floor: 2,
+                        name: "Salón de Usos Múltiples Accesible",
+                        shortName: "Salón Inclusivo",
+                        category: "auditivo",
+                        tags: ["movilidad", "auditivo"],
+                        icon: "🎤",
+                        x: 650, y: 440, w: 240, h: 220,
+                        minZoom: 0.65,
+                        highlightTag: "Rampa al escenario • Subtítulos",
+                        routeText: "En el lado derecho del Piso 2, justo frente al área de Enfermería.",
+                        description: "Sala para talleres y actividades con rampa suave hacia el escenario, sonido adaptado para audífonos y pantalla con subtítulos en vivo.",
+                        specs: [
+                            "Audio claro directo para usuarios de audífonos",
+                            "Acceso al escenario mediante rampa suave",
+                            "Lugares integrados para sillas de ruedas junto a acompañantes"
+                        ],
+                        diagramType: "dining"
+                    },
+                    {
+                        id: "terraza-2",
+                        floor: 2,
+                        name: "Terraza Segura y Mirador Nivelado",
+                        shortName: "Terraza Segura",
+                        category: "visual",
+                        tags: ["movilidad", "visual", "sensorial"],
+                        icon: "🌤️",
+                        x: 380, y: 460, w: 240, h: 200,
+                        minZoom: 0.85,
+                        highlightTag: "Salida sin borde • Pasamanos continuo",
+                        routeText: "Desde el Ascensor del Piso 2, avanza hacia el frente por el pasillo central hasta la salida abierta.",
+                        description: "Balcón amplio con barandal alto de seguridad, pasamanos continuo y cómodo, piso antideslizante y área con sombra fresca.",
+                        specs: [
+                            "Salida totalmente plana sin escalón ni borde",
+                            "Pasamanos seguro alrededor de todo el mirador",
+                            "Zonas con sombra y asientos cómodos"
+                        ],
+                        diagramType: "ramp"
+                    }
+                ]
+            }
+        };
+
+        // =========================================================================
+        // 2. ESTADO GLOBAL DE LA APLICACIÓN Y ACCESIBILIDAD
+        // =========================================================================
+        const state = {
+            currentTab: 'mapa',
+            currentFloor: 1,
+            selectedRoomId: null,
+            hoveredRoomId: null,
+            categoryFilter: 'all',
+            // Cámara y Zoom
+            zoom: 0.78,
+            targetZoom: 0.78,
+            panX: 0,
+            panY: 0,
+            targetPanX: 0,
+            targetPanY: 0,
+            isDragging: false,
+            dragStartX: 0,
+            dragStartY: 0,
+            // Ajustes de Accesibilidad en vivo
+            a11y: {
+                stepFreeOnly: true,
+                tactileGuide: true,
+                autoVoice: false,
+                largeText: false,
+                highContrast: false
+            }
+        };
+
+        const canvas = document.getElementById('mapCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // =========================================================================
+        // 3. SÍNTESIS DE VOZ EN ESPAÑOL (WEB SPEECH API)
+        // =========================================================================
+        function speakText(text) {
+            if (!('speechSynthesis' in window)) return;
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-MX';
+            utterance.rate = 0.96;
+            utterance.pitch = 1.02;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function speakCurrentRoom() {
+            const room = getRoomById(state.selectedRoomId);
+            if (!room) return;
+            const message = `${room.name}, en ${HOTEL_DATA[room.floor].name}. ${room.description}. Cómo llegar: ${room.routeText}. Características: ${room.specs.join('. ')}.`;
+            speakText(message);
+        }
+
+        function toggleAutoVoice() {
+            state.a11y.autoVoice = !state.a11y.autoVoice;
+            updateA11yButtonsUI();
+            if (state.a11y.autoVoice) {
+                speakText("Lectura automática de voz activada. Al seleccionar cualquier lugar del hotel escucharás su guía.");
+            } else if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+        }
+
+        // =========================================================================
+        // 4. NAVEGACIÓN ENTRE PESTAÑAS, PISOS Y AJUSTES DE ACCESIBILIDAD
+        // =========================================================================
+        function switchTab(tabName) {
+            state.currentTab = tabName;
+            const tabs = ['mapa', 'ayuda'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const view = document.getElementById(`view-${t}`);
+                if (!btn || !view) return;
+                const isActive = t === tabName;
+                view.classList.toggle('hidden', !isActive);
+                btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                if (isActive) {
+                    btn.className = "a11y-btn px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 rose-gold-btn text-white";
+                } else {
+                    btn.className = "a11y-btn px-4 py-2 rounded-2xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-white/80 text-rose-900 border border-pink-200 hover:bg-pink-100/80 shadow-sm";
+                }
+            });
+
+            // Mostrar selector de pisos solo cuando estamos en el Mapa
+            document.getElementById('floor-switcher-box').classList.toggle('hidden', tabName !== 'mapa');
+
+            if (tabName === 'mapa') {
+                resizeCanvas();
+            }
+        }
+
+        function setFloor(floorNum, keepSelection = false) {
+            state.currentFloor = floorNum;
+            if (!keepSelection) {
+                state.selectedRoomId = null;
+                closeInspector();
+            }
+
+            const btn1 = document.getElementById('btn-floor-1');
+            const btn2 = document.getElementById('btn-floor-2');
+            btn1.setAttribute('aria-pressed', floorNum === 1 ? 'true' : 'false');
+            btn2.setAttribute('aria-pressed', floorNum === 2 ? 'true' : 'false');
+
+            if (floorNum === 1) {
+                btn1.className = "a11y-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold rose-gold-btn text-white";
+                btn2.className = "a11y-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-rose-900 hover:bg-white/70";
+            } else {
+                btn2.className = "a11y-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold rose-gold-btn text-white";
+                btn1.className = "a11y-btn px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all text-rose-900 hover:bg-white/70";
+            }
+
+            document.getElementById('current-floor-badge').textContent = `Nivel ${floorNum}: ${floorNum === 1 ? 'Planta Baja' : 'Planta Alta'}`;
+            renderRoomList();
+
+            if (state.a11y.autoVoice) {
+                speakText(`Mostrando ${HOTEL_DATA[floorNum].name}. ${HOTEL_DATA[floorNum].subtitle}`);
+            }
+        }
+
+        function useElevator() {
+            const targetFloor = state.currentFloor === 1 ? 2 : 1;
+            const targetElevatorId = targetFloor === 1 ? 'ascensor-1' : 'ascensor-2';
+            setFloor(targetFloor, true);
+            selectRoom(targetElevatorId, true);
+        }
+
+        function toggleA11yOption(key) {
+            state.a11y[key] = !state.a11y[key];
+            document.body.classList.toggle('a11y-large-text', state.a11y.largeText);
+            document.body.classList.toggle('a11y-high-contrast', state.a11y.highContrast);
+            updateA11yButtonsUI();
+        }
+
+        function updateA11yButtonsUI() {
+            const keys = ['stepFreeOnly', 'tactileGuide', 'largeText', 'highContrast'];
+            keys.forEach(k => {
+                const btn = document.getElementById(`toggle-${k}`);
+                if (!btn) return;
+                const active = state.a11y[k];
+                btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+                btn.textContent = active ? 'Activado' : 'Desactivado';
+                btn.className = active
+                    ? "a11y-btn px-5 rounded-2xl font-bold text-sm rose-gold-btn text-white"
+                    : "a11y-btn px-5 rounded-2xl font-bold text-sm bg-pink-100 text-rose-900 border border-pink-300";
+            });
+
+            // Sincronizar botones de voz
+            const voiceBtn = document.getElementById('toggle-autoVoice');
+            if (voiceBtn) {
+                voiceBtn.setAttribute('aria-pressed', state.a11y.autoVoice ? 'true' : 'false');
+                voiceBtn.textContent = state.a11y.autoVoice ? 'Activado' : 'Desactivado';
+                voiceBtn.className = state.a11y.autoVoice
+                    ? "a11y-btn px-5 rounded-2xl font-bold text-sm rose-gold-btn text-white"
+                    : "a11y-btn px-5 rounded-2xl font-bold text-sm bg-pink-100 text-rose-900 border border-pink-300";
+            }
+            document.getElementById('voice-status-icon').textContent = state.a11y.autoVoice ? '🔊' : '🔈';
+            document.getElementById('voice-status-label').textContent = state.a11y.autoVoice ? 'Voz: On' : 'Voz: Off';
+        }
+
+        function requestHelp(title, desc) {
+            const box = document.getElementById('help-confirmation');
+            document.getElementById('help-conf-title').textContent = `Solicitud Enviada: ${title}`;
+            document.getElementById('help-conf-desc').textContent = desc;
+            box.classList.remove('hidden');
+            speakText(`Solicitud enviada: ${title}. ${desc}`);
+        }
+
+        // =========================================================================
+        // 5. LISTA LATERAL E INSPECTOR DE ESPACIOS
+        // =========================================================================
+        function setCategoryFilter(cat) {
+            state.categoryFilter = cat;
+            ['all', 'movilidad', 'visual', 'auditivo', 'sensorial'].forEach(c => {
+                const btn = document.getElementById(`filter-${c}`);
+                if (!btn) return;
+                if (c === cat) {
+                    btn.className = "min-h-[38px] px-3 py-1 rounded-xl text-xs font-bold rose-gold-btn text-white";
+                } else {
+                    btn.className = "min-h-[38px] px-2.5 py-1 rounded-xl text-xs font-bold bg-white/80 text-rose-900 border border-pink-200 hover:bg-pink-100";
+                }
+            });
+            renderRoomList();
+        }
+
+        function renderRoomList() {
+            const listEl = document.getElementById('room-list');
+            const query = document.getElementById('search-room').value.trim().toLowerCase();
+            const rooms = HOTEL_DATA[state.currentFloor].rooms;
+
+            const filtered = rooms.filter(r => {
+                const matchesCat = state.categoryFilter === 'all' || r.tags.includes(state.categoryFilter);
+                const matchesQuery = !query ||
+                    r.name.toLowerCase().includes(query) ||
+                    r.description.toLowerCase().includes(query) ||
+                    r.specs.some(s => s.toLowerCase().includes(query));
+                return matchesCat && matchesQuery;
+            });
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = `<div class="p-4 text-center text-xs font-semibold text-rose-700 bg-pink-50/70 rounded-2xl">No hay espacios con ese filtro en este piso. Prueba cambiar de piso o limpiar la búsqueda.</div>`;
+                return;
+            }
+
+            listEl.innerHTML = filtered.map(room => {
+                const isSelected = state.selectedRoomId === room.id;
+                return `
+                    <button onclick="selectRoom('${room.id}', true)" role="listitem"
+                        class="a11y-btn w-full text-left p-3 rounded-2xl border transition-all flex items-center justify-between gap-2.5 ${
+                            isSelected
+                                ? 'rose-gold-btn text-white border-rose-500'
+                                : 'bg-white/75 pastel-subcard hover:bg-pink-100/80 text-rose-950 border-pink-200/80 shadow-sm'
+                        }">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <span class="text-xl shrink-0" aria-hidden="true">${room.icon}</span>
+                            <div class="truncate">
+                                <div class="text-xs sm:text-sm font-bold truncate">${room.shortName}</div>
+                                <div class="text-[11px] truncate ${isSelected ? 'text-pink-100' : 'text-rose-700'}">${room.highlightTag}</div>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold shrink-0 ${isSelected ? 'text-white' : 'text-rose-500'}" aria-hidden="true">Ver →</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function getRoomById(id) {
+            if (!id) return null;
+            return HOTEL_DATA[1].rooms.find(r => r.id === id) || HOTEL_DATA[2].rooms.find(r => r.id === id) || null;
+        }
+
+        function selectRoom(roomId, focusCamera = true) {
+            const room = getRoomById(roomId);
+            if (!room) return;
+
+            if (room.floor !== state.currentFloor) {
+                setFloor(room.floor, true);
+            }
+
+            state.selectedRoomId = room.id;
+            renderRoomList();
+
+            // Llenar panel inspector
+            document.getElementById('insp-badge').textContent = `${HOTEL_DATA[room.floor].name} • ${room.highlightTag}`;
+            document.getElementById('insp-title').textContent = `${room.icon} ${room.name}`;
+            document.getElementById('insp-route').textContent = room.routeText;
+            document.getElementById('insp-desc').textContent = room.description;
+            document.getElementById('insp-specs').innerHTML = room.specs
+                .map(spec => `<li class="flex items-start gap-2 bg-pink-50/80 pastel-subcard px-3 py-2 rounded-xl border border-pink-100"><span class="text-rose-500 shrink-0" aria-hidden="true">✔</span><span>${spec}</span></li>`)
+                .join('');
+            document.getElementById('insp-diagram').innerHTML = buildAccessibilityDiagramSVG(room);
+
+            // Mostrar botón de ascensor si el espacio seleccionado es el ascensor
+            const elevatorAction = document.getElementById('insp-elevator-action');
+            if (room.isElevator) {
+                elevatorAction.classList.remove('hidden');
+                document.getElementById('insp-elevator-text').textContent = room.floor === 1
+                    ? 'Subir al Piso 2 en Ascensor Accesible'
+                    : 'Bajar al Piso 1 en Ascensor Accesible';
+            } else {
+                elevatorAction.classList.add('hidden');
+            }
+
+            document.getElementById('inspector-panel').classList.remove('hidden');
+
+            // Acercar cámara suavemente para revelar detalles de nivel alto
+            if (focusCamera) {
+                const centerX = room.x + room.w / 2;
+                const centerY = room.y + room.h / 2;
+                state.targetZoom = Math.max(state.zoom, 1.05);
+                state.targetPanX = (canvas.width / 2) - centerX * state.targetZoom;
+                state.targetPanY = (canvas.height / 2) - centerY * state.targetZoom;
+            }
+
+            if (state.a11y.autoVoice) {
+                speakCurrentRoom();
+            }
+        }
+
+        function closeInspector() {
+            state.selectedRoomId = null;
+            document.getElementById('inspector-panel').classList.add('hidden');
+            renderRoomList();
+        }
+
+        function buildAccessibilityDiagramSVG(room) {
+            if (room.diagramType === 'turning') {
+                return `
+                    <svg viewBox="0 0 260 100" class="w-full h-full" aria-label="Esquema de espacio amplio para moverse en silla de ruedas">
+                        <rect x="20" y="10" width="220" height="80" rx="14" fill="#ffe4ec" stroke="#f472b6" stroke-width="2"/>
+                        <circle cx="130" cy="50" r="32" fill="#fbcfe8" stroke="#db2777" stroke-width="2" stroke-dasharray="5 3"/>
+                        <text x="130" y="47" text-anchor="middle" fill="#831843" font-size="10.5" font-weight="bold">Espacio Amplio</text>
+                        <text x="130" y="61" text-anchor="middle" fill="#be185d" font-size="9.5" font-weight="bold">Giro Cómodo</text>
+                        <path d="M 20 32 L 20 68" stroke="#be185d" stroke-width="4"/>
+                        <text x="58" y="54" fill="#831843" font-size="9" font-weight="bold">Puerta Ancha</text>
+                    </svg>`;
+            }
+            if (room.diagramType === 'ramp') {
+                return `
+                    <svg viewBox="0 0 260 100" class="w-full h-full" aria-label="Esquema de acceso continuo sin escalones">
+                        <path d="M 20 75 L 110 75 L 195 35 L 240 35" fill="none" stroke="#db2777" stroke-width="5" stroke-linecap="round"/>
+                        <path d="M 110 62 L 195 22" fill="none" stroke="#f472b6" stroke-width="2.5" stroke-dasharray="4 3"/>
+                        <text x="130" y="88" text-anchor="middle" fill="#831843" font-size="10" font-weight="bold">Acceso Continuo Sin Escalones • Pasamanos Doble</text>
+                    </svg>`;
+            }
+            if (room.diagramType === 'elevator') {
+                return `
+                    <svg viewBox="0 0 260 100" class="w-full h-full" aria-label="Esquema de cabina de ascensor accesible con guía por voz">
+                        <rect x="65" y="12" width="130" height="76" rx="12" fill="#ffe4ec" stroke="#db2777" stroke-width="2.5"/>
+                        <line x1="130" y1="12" x2="130" y2="88" stroke="#f472b6" stroke-width="2"/>
+                        <rect x="172" y="34" width="14" height="32" rx="4" fill="#db2777"/>
+                        <text x="130" y="96" text-anchor="middle" fill="#831843" font-size="9" font-weight="bold">Cabina Amplia • Guía Sonora y Visual</text>
+                    </svg>`;
+            }
+            return `
+                <svg viewBox="0 0 260 100" class="w-full h-full" aria-label="Esquema de espacio inclusivo con guía visual">
+                    <rect x="25" y="14" width="210" height="72" rx="14" fill="#ffe4ec" stroke="#f472b6" stroke-width="2"/>
+                    <line x1="35" y1="50" x2="225" y2="50" stroke="#db2777" stroke-width="4" stroke-dasharray="6 4"/>
+                    <circle cx="70" cy="50" r="8" fill="#db2777"/>
+                    <circle cx="190" cy="50" r="8" fill="#db2777"/>
+                    <text x="130" y="32" text-anchor="middle" fill="#831843" font-size="10" font-weight="bold">Ruta Iluminada y Señalética Clara</text>
+                </svg>`;
+        }
+
+        // =========================================================================
+        // 6. MOTOR GRÁFICO DEL PLANO ARQUITECTÓNICO PASTEL + ZOOM LOD
+        // =========================================================================
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            if (state.panX === 0 && state.panY === 0) {
+                resetCamera(true);
+            }
+        }
+
+        function resetCamera(instant = false) {
+            const isMobile = canvas.width < 640;
+            const z = isMobile ? 0.44 : 0.76;
+            const tx = (canvas.width / 2) - 500 * z + (isMobile ? 0 : 40);
+            const ty = (canvas.height / 2) - 440 * z;
+            state.targetZoom = z;
+            state.targetPanX = tx;
+            state.targetPanY = ty;
+            if (instant) {
+                state.zoom = z;
+                state.panX = tx;
+                state.panY = ty;
+            }
+        }
+
+        function adjustZoom(delta) {
+            const nextZoom = Math.min(1.65, Math.max(0.38, state.targetZoom + delta));
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const worldX = (cx - state.targetPanX) / state.targetZoom;
+            const worldY = (cy - state.targetPanY) / state.targetZoom;
+            state.targetZoom = nextZoom;
+            state.targetPanX = cx - worldX * nextZoom;
+            state.targetPanY = cy - worldY * nextZoom;
+        }
+
+        function screenToWorld(sx, sy) {
+            return {
+                x: (sx - state.panX) / state.zoom,
+                y: (sy - state.panY) / state.zoom
+            };
+        }
+
+        // Eventos de Ratón y Táctiles para arrastrar y hacer zoom
+        canvas.addEventListener('mousedown', e => {
+            state.isDragging = true;
+            state.dragStartX = e.clientX - state.targetPanX;
+            state.dragStartY = e.clientY - state.targetPanY;
+        });
+
+        window.addEventListener('mousemove', e => {
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+
+            if (state.isDragging) {
+                state.targetPanX = e.clientX - state.dragStartX;
+                state.targetPanY = e.clientY - state.dragStartY;
+                return;
+            }
+
+            if (state.currentTab === 'mapa') {
+                const wp = screenToWorld(mx, my);
+                const rooms = HOTEL_DATA[state.currentFloor].rooms;
+                const hit = rooms.find(r => wp.x >= r.x && wp.x <= r.x + r.w && wp.y >= r.y && wp.y <= r.y + r.h);
+                state.hoveredRoomId = hit ? hit.id : null;
+                canvas.style.cursor = hit ? 'pointer' : 'grab';
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            state.isDragging = false;
+        });
+
+        canvas.addEventListener('click', e => {
+            const rect = canvas.getBoundingClientRect();
+            const wp = screenToWorld(e.clientX - rect.left, e.clientY - rect.top);
+            const rooms = HOTEL_DATA[state.currentFloor].rooms;
+            const hit = rooms.find(r => wp.x >= r.x && wp.x <= r.x + r.w && wp.y >= r.y && wp.y <= r.y + r.h);
+            if (hit) {
+                selectRoom(hit.id, true);
+            }
+        });
+
+        canvas.addEventListener('wheel', e => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const mx = e.clientX - rect.left;
+            const my = e.clientY - rect.top;
+            const factor = e.deltaY < 0 ? 1.12 : 0.89;
+            const nextZoom = Math.min(1.65, Math.max(0.38, state.targetZoom * factor));
+            const wx = (mx - state.targetPanX) / state.targetZoom;
+            const wy = (my - state.targetPanY) / state.targetZoom;
+            state.targetZoom = nextZoom;
+            state.targetPanX = mx - wx * nextZoom;
+            state.targetPanY = my - wy * nextZoom;
+        }, { passive: false });
+
+        // Soporte Táctil (Tap y Arrastre)
+        let touchMoved = false;
+        canvas.addEventListener('touchstart', e => {
+            if (e.touches.length === 1) {
+                touchMoved = false;
+                state.isDragging = true;
+                state.dragStartX = e.touches[0].clientX - state.targetPanX;
+                state.dragStartY = e.touches[0].clientY - state.targetPanY;
+            }
+        }, { passive: true });
+
+        canvas.addEventListener('touchmove', e => {
+            if (state.isDragging && e.touches.length === 1) {
+                touchMoved = true;
+                state.targetPanX = e.touches[0].clientX - state.dragStartX;
+                state.targetPanY = e.touches[0].clientY - state.dragStartY;
+            }
+        }, { passive: true });
+
+        canvas.addEventListener('touchend', e => {
+            state.isDragging = false;
+            if (!touchMoved && e.changedTouches.length === 1) {
+                const rect = canvas.getBoundingClientRect();
+                const t = e.changedTouches[0];
+                const wp = screenToWorld(t.clientX - rect.left, t.clientY - rect.top);
+                const hit = HOTEL_DATA[state.currentFloor].rooms.find(r => wp.x >= r.x && wp.x <= r.x + r.w && wp.y >= r.y && wp.y <= r.y + r.h);
+                if (hit) selectRoom(hit.id, true);
+            }
+        });
+
+        function drawRoundedRect(x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+
+        function renderMap() {
+            // Interpolación suave de cámara
+            state.zoom += (state.targetZoom - state.zoom) * 0.16;
+            state.panX += (state.targetPanX - state.panX) * 0.16;
+            state.panY += (state.targetPanY - state.panY) * 0.16;
+
+            // Actualizar etiqueta de Nivel de Detalle (LOD)
+            const pct = Math.round(state.zoom * 100);
+            const lodEl = document.getElementById('lod-indicator');
+            if (lodEl) {
+                if (state.zoom < 0.62) lodEl.textContent = `Panorámica (${pct}%)`;
+                else if (state.zoom < 0.92) lodEl.textContent = `Pasillos y Salas (${pct}%)`;
+                else lodEl.textContent = `Detalle Máximo (${pct}%)`;
+            }
+
+            const hc = state.a11y.highContrast;
+            const bgGrad = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 50, canvas.width / 2, canvas.height / 2, Math.max(canvas.width, canvas.height));
+            bgGrad.addColorStop(0, hc ? '#26101b' : '#fff8fa');
+            bgGrad.addColorStop(1, hc ? '#14070e' : '#ffe8ef');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(state.panX, state.panY);
+            ctx.scale(state.zoom, state.zoom);
+
+            // 1. Retícula decorativa con puntitos pastel suaves
+            ctx.fillStyle = hc ? 'rgba(244, 114, 182, 0.22)' : 'rgba(244, 114, 182, 0.28)';
+            for (let gx = -150; gx <= 1150; gx += 45) {
+                for (let gy = -50; gy <= 900; gy += 45) {
+                    ctx.beginPath();
+                    ctx.arc(gx, gy, 1.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // 2. Jardines exteriores y terraza perimetral decorativa
+            drawRoundedRect(52, 162, 896, 616, 48);
+            ctx.fillStyle = hc ? 'rgba(236, 72, 153, 0.08)' : 'rgba(255, 255, 255, 0.65)';
+            ctx.fill();
+            ctx.strokeStyle = hc ? 'rgba(244, 114, 182, 0.35)' : 'rgba(244, 114, 182, 0.45)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([8, 6]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Arbolitos / jardineras pastel en las 4 esquinas exteriores
+            const gardenSpots = [
+                { x: 96, y: 152 }, { x: 140, y: 152 }, { x: 860, y: 152 }, { x: 904, y: 152 },
+                { x: 96, y: 788 }, { x: 140, y: 788 }, { x: 860, y: 788 }, { x: 904, y: 788 }
+            ];
+            gardenSpots.forEach(spot => {
+                ctx.beginPath();
+                ctx.arc(spot.x, spot.y, 13, 0, Math.PI * 2);
+                ctx.fillStyle = hc ? '#3f182b' : '#fbcfe8';
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(spot.x - 3, spot.y - 3, 6, 0, Math.PI * 2);
+                ctx.fillStyle = hc ? '#f472b6' : '#f9a8d4';
+                ctx.fill();
+            });
+
+            // 3. Silueta Principal del Edificio con Doble Marco Oro Rosa y Sombra Profunda
+            ctx.save();
+            ctx.shadowColor = hc ? 'rgba(255, 133, 179, 0.3)' : 'rgba(219, 39, 119, 0.18)';
+            ctx.shadowBlur = 35;
+            ctx.shadowOffsetY = 14;
+            drawRoundedRect(80, 190, 840, 560, 38);
+            const buildingGrad = ctx.createLinearGradient(80, 190, 920, 750);
+            buildingGrad.addColorStop(0, hc ? '#2e1321' : '#fff0f5');
+            buildingGrad.addColorStop(0.5, hc ? '#26101b' : '#ffe4ec');
+            buildingGrad.addColorStop(1, hc ? '#2e1321' : '#ffedf3');
+            ctx.fillStyle = buildingGrad;
+            ctx.fill();
+            ctx.restore();
+
+            // Doble borde arquitectónico
+            drawRoundedRect(80, 190, 840, 560, 38);
+            ctx.strokeStyle = hc ? '#ff85b3' : '#f472b6';
+            ctx.lineWidth = 5;
+            ctx.stroke();
+
+            drawRoundedRect(90, 200, 820, 540, 30);
+            ctx.strokeStyle = hc ? 'rgba(251, 207, 232, 0.35)' : 'rgba(255, 255, 255, 0.9)';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            // 4. Pasillos Amplios de Circulación Universal con Alfombra Central Suave
+            drawRoundedRect(355, 218, 290, 504, 22);
+            ctx.fillStyle = hc ? '#3b1829' : '#fffafc';
+            ctx.fill();
+
+            drawRoundedRect(102, 384, 796, 78, 20);
+            ctx.fillStyle = hc ? '#3b1829' : '#fffafc';
+            ctx.fill();
+
+            // Alfombra decorativa rosa suave en los pasillos
+            drawRoundedRect(468, 226, 64, 490, 14);
+            ctx.fillStyle = hc ? 'rgba(219, 39, 119, 0.18)' : 'rgba(251, 207, 232, 0.42)';
+            ctx.fill();
+
+            drawRoundedRect(112, 402, 776, 42, 14);
+            ctx.fillStyle = hc ? 'rgba(219, 39, 119, 0.18)' : 'rgba(251, 207, 232, 0.42)';
+            ctx.fill();
+
+            // Macetas decorativas interiores en las esquinas del vestíbulo central
+            const lobbyPlants = [
+                { x: 372, y: 372 }, { x: 628, y: 372 },
+                { x: 372, y: 474 }, { x: 628, y: 474 }
+            ];
+            lobbyPlants.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 10, 0, Math.PI * 2);
+                ctx.fillStyle = hc ? '#831843' : '#f9a8d4';
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+            });
+
+            // 5. Escaleras Convencionales (se atenúan si "Solo Rutas Sin Escalones" está activo)
+            ctx.save();
+            ctx.globalAlpha = state.a11y.stepFreeOnly ? 0.25 : 0.85;
+            drawRoundedRect(585, 240, 52, 110, 12);
+            ctx.fillStyle = hc ? '#4a1d33' : '#fce7f3';
+            ctx.fill();
+            ctx.strokeStyle = '#db2777';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            for (let sy = 252; sy <= 338; sy += 12) {
+                ctx.beginPath(); ctx.moveTo(592, sy); ctx.lineTo(630, sy); ctx.stroke();
+            }
+            ctx.fillStyle = hc ? '#fbcfe8' : '#9d174d';
+            ctx.font = 'bold 9px Quicksand';
+            ctx.textAlign = 'center';
+            ctx.fillText('Escaleras', 611, 234);
+            ctx.restore();
+
+            // 6. Guía Visual en el Suelo (Líneas guía iluminadas que conectan cada zona)
+            if (state.a11y.tactileGuide) {
+                ctx.save();
+                ctx.strokeStyle = hc ? '#fde047' : '#ec4899';
+                ctx.lineWidth = 4.5;
+                ctx.setLineDash([8, 8]);
+                ctx.beginPath();
+                if (state.currentFloor === 1) {
+                    ctx.moveTo(500, 725);
+                    ctx.lineTo(500, 360);
+                    ctx.moveTo(500, 422);
+                    ctx.lineTo(230, 422);
+                    ctx.moveTo(500, 422);
+                    ctx.lineTo(775, 422);
+                } else {
+                    ctx.moveTo(500, 360);
+                    ctx.lineTo(500, 460);
+                    ctx.moveTo(500, 422);
+                    ctx.lineTo(230, 422);
+                    ctx.moveTo(500, 422);
+                    ctx.lineTo(775, 422);
+                }
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // 7. Dibujar Habitaciones y Espacios Estilizados según Nivel de Zoom (LOD)
+            const rooms = HOTEL_DATA[state.currentFloor].rooms;
+            rooms.forEach(room => {
+                const isSelected = state.selectedRoomId === room.id;
+                const isHovered = state.hoveredRoomId === room.id;
+                const matchesFilter = state.categoryFilter === 'all' || room.tags.includes(state.categoryFilter);
+
+                const lodAlpha = (state.zoom >= room.minZoom || isSelected || state.categoryFilter !== 'all') ? 1 : 0.45;
+
+                ctx.save();
+                ctx.globalAlpha = matchesFilter ? lodAlpha : 0.25;
+
+                // Sombra suave debajo de cada sala
+                ctx.shadowColor = isSelected ? 'rgba(219, 39, 119, 0.35)' : 'rgba(244, 114, 182, 0.16)';
+                ctx.shadowBlur = isSelected ? 18 : 10;
+                ctx.shadowOffsetY = 5;
+
+                drawRoundedRect(room.x, room.y, room.w, room.h, 22);
+                const roomGrad = ctx.createLinearGradient(room.x, room.y, room.x, room.y + room.h);
+                if (isSelected) {
+                    roomGrad.addColorStop(0, hc ? '#be185d' : '#fce7f3');
+                    roomGrad.addColorStop(1, hc ? '#831843' : '#fbcfe8');
+                } else if (isHovered) {
+                    roomGrad.addColorStop(0, hc ? '#501b36' : '#fff5f8');
+                    roomGrad.addColorStop(1, hc ? '#3d1429' : '#fce7f3');
+                } else {
+                    roomGrad.addColorStop(0, hc ? '#381628' : '#ffffff');
+                    roomGrad.addColorStop(1, hc ? '#2b101e' : '#fff7fa');
+                }
+                ctx.fillStyle = roomGrad;
+                ctx.fill();
+
+                ctx.shadowColor = 'transparent';
+                ctx.lineWidth = isSelected ? 4 : 2;
+                ctx.strokeStyle = isSelected ? '#db2777' : (hc ? '#f472b6' : '#f9a8d4');
+                ctx.stroke();
+
+                // Franja superior decorativa de cabecera dentro de la tarjeta de sala
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(room.x + 22, room.y);
+                ctx.lineTo(room.x + room.w - 22, room.y);
+                ctx.quadraticCurveTo(room.x + room.w, room.y, room.x + room.w, room.y + 14);
+                ctx.lineTo(room.x, room.y + 14);
+                ctx.quadraticCurveTo(room.x, room.y, room.x + 22, room.y);
+                ctx.closePath();
+                ctx.fillStyle = isSelected ? '#db2777' : (hc ? '#831843' : '#fbcfe8');
+                ctx.fill();
+                ctx.restore();
+
+                // Medallón circular pastel detrás del emoji
+                const cx = room.x + room.w / 2;
+                const cy = room.y + 38;
+                ctx.beginPath();
+                ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+                ctx.fillStyle = isSelected ? '#ffffff' : (hc ? '#501b36' : '#fce7f3');
+                ctx.fill();
+
+                // Icono y Título del Espacio
+                ctx.fillStyle = hc ? '#ffffff' : '#4a2535';
+                ctx.font = '20px Quicksand';
+                ctx.textAlign = 'center';
+                ctx.fillText(room.icon, cx, cy + 7);
+
+                ctx.font = 'bold 13px Quicksand';
+                ctx.fillText(room.shortName, cx, room.y + 72);
+
+                // Etiqueta práctica visible en zoom medio/alto
+                if (state.zoom >= 0.65 || isSelected) {
+                    ctx.fillStyle = hc ? '#fbcfe8' : '#be185d';
+                    ctx.font = '600 10.5px Quicksand';
+                    ctx.fillText(room.highlightTag, cx, room.y + 90);
+                }
+
+                ctx.restore();
+            });
+
+            // 8. Trazar Ruta Accesible Animada hasta el Espacio Seleccionado
+            const selectedRoom = getRoomById(state.selectedRoomId);
+            if (selectedRoom && selectedRoom.floor === state.currentFloor) {
+                const start = HOTEL_DATA[state.currentFloor].entryPoint;
+                const destX = selectedRoom.x + selectedRoom.w / 2;
+                const destY = selectedRoom.y + selectedRoom.h / 2;
+
+                ctx.save();
+                // Resplandor suave de la ruta
+                ctx.strokeStyle = 'rgba(225, 29, 72, 0.25)';
+                ctx.lineWidth = 11;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(start.x, start.y);
+                ctx.lineTo(500, 422);
+                ctx.lineTo(destX, 422);
+                ctx.lineTo(destX, destY);
+                ctx.stroke();
+
+                // Línea animada principal
+                ctx.strokeStyle = '#e11d48';
+                ctx.lineWidth = 5;
+                ctx.setLineDash([10, 8]);
+                ctx.lineDashOffset = -(performance.now() / 35) % 36;
+
+                ctx.beginPath();
+                ctx.moveTo(start.x, start.y);
+                ctx.lineTo(500, 422);
+                ctx.lineTo(destX, 422);
+                ctx.lineTo(destX, destY);
+                ctx.stroke();
+
+                // Marcador de Origen ("TÚ ESTÁS AQUÍ")
+                ctx.setLineDash([]);
+                ctx.beginPath();
+                ctx.arc(start.x, start.y, 13, 0, Math.PI * 2);
+                ctx.fillStyle = '#db2777';
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 3.5;
+                ctx.stroke();
+
+                ctx.fillStyle = hc ? '#ffffff' : '#831843';
+                ctx.font = 'bold 11px Quicksand';
+                ctx.textAlign = 'center';
+                ctx.fillText(state.currentFloor === 1 ? '🎀 INICIO (SIN ESCALONES)' : '🎀 ASCENSOR PISO 2', start.x, start.y + 28);
+                ctx.restore();
+            }
+
+            // 9. Etiquetas Panorámicas de Alas (visibles cuando el zoom está alejado < 0.65)
+            if (state.zoom < 0.65) {
+                ctx.save();
+                ctx.fillStyle = hc ? 'rgba(255, 228, 236, 0.9)' : 'rgba(157, 23, 77, 0.8)';
+                ctx.font = 'bold 18px Playfair Display';
+                ctx.textAlign = 'center';
+                ctx.fillText('🎀 ALA OESTE', 225, 145);
+                ctx.fillText('🎀 NÚCLEO CENTRAL', 500, 145);
+                ctx.fillText('🎀 ALA ESTE', 775, 145);
+                ctx.restore();
+            }
+
+            ctx.restore();
+            requestAnimationFrame(renderMap);
+        }
+
+        // =========================================================================
+        // 7. INICIALIZACIÓN
+        // =========================================================================
+        window.addEventListener('resize', resizeCanvas);
+        window.onload = function () {
+            resizeCanvas();
+            renderRoomList();
+            updateA11yButtonsUI();
+            requestAnimationFrame(renderMap);
+        };
+    </script>
+</body>
+</html> 
